@@ -1,6 +1,6 @@
 # KLiCS
 
-Kepler's Lightweight Chat System
+Kepler's Light Chat System
 
 A super simple chatbox program in 22 lines of code, plus however many for messages.
 
