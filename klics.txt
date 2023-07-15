@@ -1,0 +1,117 @@
+-- title:   game title
+-- author:  game developer, email, etc.
+-- desc:    short description
+-- site:    website link
+-- license: MIT License 
+-- version: 0.1
+-- script:  lua
+
+--[[
+	
+	strategy:
+	
+	 big table that contains a bunch
+		of small tables. 
+		
+		Hierarchy:
+		
+			Big table, contains every chat 
+			throughout whole game
+			
+			> Small tables, contains every 
+			  message in single interaction
+					
+			  > Message tables, contain portrait
+					  ID and string itself
+							
+					>End command
+	
+	
+	
+	  Global Chat variable
+			  tells where you are in the big
+					table
+					
+			Local Chat Variable
+				 Tells where you are in the 
+					small table	
+		 
+	
+	]]
+	
+	--portrait IDs are every 2 starting 
+	--from 1 in example, but this can be 
+	--changed really easily
+	
+	messages = { 
+	
+	 {--interaction one
+	    {1,"Hello World"},
+	    {3,"This is message 2!"},
+					{"eoi"}
+  },--end of interaction 1
+  
+         {--interaction two
+	    {5,"AHHHHHHH"},
+	    {3,"WE'Eve ENTERED A NEW INTERACTION"},
+					{3,"I have changed where the box goes!"},
+					{"eoi"}
+  },--end of interaction 1
+  
+  {"eof"}
+ }
+	gloc = 1 --global location
+ iloc = 1 --interaction location
+	
+ mloc = {38,110} -- textbox location
+ bcol = 7 -- textbox color
+ bdcol = 6 --change border color
+ tcol = 12 -- text color 
+
+function TIC()
+
+ cls()
+ poke(0x03FF8, 10)
+ 
+ if messages[gloc][1] == "eof" then
+  
+  --roll credits
+ 
+ 
+ --test to see if we are at the end
+ --of the interaction
+ elseif messages[gloc][iloc][1] == "eoi" then
+  
+  --change where text box goes for fun
+  mloc[2] = 30
+  
+  
+		if btnp(4) then 
+		 --increment global location
+   --to point to new interaction
+		 gloc = gloc+1
+			--reset interaction location to 
+			--point to first message
+			iloc = 1
+		end
+		
+	else 
+	 --draw rectangle that sits
+		--behind text
+	 rect(mloc[1]-2,mloc[2]-2,240-2*mloc[1],20,bcol)
+		rectb(mloc[1]-2,mloc[2]-2,240-2*mloc[1],20,bdcol)
+		
+		--draw portrait
+		spr(messages[gloc][iloc][1],mloc[1],mloc[2],0,1,0,0,2,2)
+		
+		--print text
+		print(messages[gloc][iloc][2],mloc[1]+20,mloc[2]+6,tcol,false,1,true)
+		
+		--jump through text with z
+		if btnp(4) then
+		 iloc = iloc+1
+		end
+	end
+	
+end
+
